@@ -2,11 +2,10 @@
 
 import mysql.connector as sql
 import pandas as pd
+import info
 
-host='localhost'
-user='root'
-password='mysql'
-info_array = [host,user,password]
+
+info_array = [info.host,info.user,info.password]
 
 mydb = sql.connect(host = info_array[0],user = info_array[1],password = info_array[2])
 cursor = mydb.cursor()
@@ -56,7 +55,7 @@ def insert_item(prod_id,prod_name,prod_quant,price):
     
     
     
-def show_table():
+def show_table_product():
     cursor.execute(f"select * from product_table order by prod_ID ASC")
     table_output = cursor.fetchall()
     #----------------------------------------------------------------------------------output---------------------------------------
@@ -74,15 +73,21 @@ def delete_item(prod_id):
     mydb.commit()
 
     print(f"ITEM WITH ITEM ID {prod_id} HAS BEEN DELTED")
-    show_table()
+    show_table_product()
 
+def show_table_user():
+    cursor.execute(f"select * from user_table order by user_id ASC")
+    table_output = cursor.fetchall()
+    #----------------------------------------------------------------------------------output---------------------------------------
+    df = pd.DataFrame(table_output)
+    print(df)
 
 def changeprice_item(price,prod_id):
     cursor.execute(f"UPDATE product_table SET price={price} where prod_ID={prod_id}")
     mydb.commit()
 
     print("PRICE CHANGED SUCCESFULLY")
-    show_table()
+    show_table_product()
 
 
 def changename_item(prod_name,prod_id):
@@ -90,18 +95,18 @@ def changename_item(prod_name,prod_id):
     mydb.commit()
 
     print("ITEM NAME CHANGED SUCCESFULLY")
-    show_table()
+    show_table_product()
 
 
 ##------------------ readme----------------------"""
 # the admin page has the following functions
 # 1)ENTER NEW ITEM
+
 # 2)DELETE OLD ITEM
 # 3)CHANGE PRICE
 # 4) change item name
 # the program makes the user_table product_table and also inputs the first entry in user_table as the admin
-    
-   
+
 
 
     
